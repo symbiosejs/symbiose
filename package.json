@@ -1,0 +1,50 @@
+{
+  "name": "symbiose",
+  "version": "0.1.0",
+  "description": "symbiose is a MVC framework for Node.js inspired by the Symfony's way",
+  "keywords": [
+    "symbiose",
+    "express",
+    "symfony",
+    "way",
+    "framework",
+    "layer",
+    "web",
+    "router",
+    "app",
+    "mvc",
+    "bundle"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "private": true,
+  "author": "A-312",
+  "license": "MIT",
+  "homepage": "https://github.com/symbiosejs/symbiont#readme",
+  "bugs": {
+    "url": "https://github.com/symbiosejs/symbiont/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/symbiosejs/symbiont"
+  },
+  "files": [
+    "app",
+    "bin",
+    "index.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "cookie-parser": "1.4.4",
+    "debug": "4.1.1",
+    "express": "4.17.1",
+    "http-errors": "1.6.3",
+    "morgan": "1.9.1",
+    "object-assign": "4.1.1",
+    "symbiont": "1.0.0",
+    "yaml": "1.6.0",
+  }
+}
