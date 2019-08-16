@@ -1,4 +1,5 @@
 const debug = require('debug')('symbiose:kernel')
+const EventEmitter = require('./event/bin/index.js');
 const fs = require('fs')
 const createRequire = require('module').createRequire || require('module').createRequireFromPath
 const path = require('path')
