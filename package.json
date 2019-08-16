@@ -31,7 +31,6 @@
     "url": "git+https://github.com/symbiosejs/symbiont"
   },
   "files": [
-    "app",
     "bin",
     "index.js",
     "README.md",

@@ -7,7 +7,7 @@ const objectAssign = require('object-assign')
 const Http = require('./http.js')
 const App = require('./app-express.js')
 
-const configLoader = require('./../lib/convict/configloader.js')
+const configLoader = require('./convict/configloader.js')
 const Symbiont = require('symbiont')
 
 /**

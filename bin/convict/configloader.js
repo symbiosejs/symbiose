@@ -27,7 +27,17 @@ function ConfigLoader(paths) {
   }
 
   const $$ = Convict(path.resolve(__dirname, 'schema', 'config.yml'))
-  this.$$ = $$
+
+
+  /**
+   * Convict
+   *
+   * @name $$
+   * @memberOf ConfigLoader
+   */
+  Object.defineProperty(this, "$$", {
+    value: $$
+  })
 
   paths.forEach((path) => {
     debug(' - Loading %s', path)
