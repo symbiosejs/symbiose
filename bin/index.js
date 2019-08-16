@@ -1,3 +1,3 @@
 module.exports = {
-    Kernel: require("./bin/kernel.js")
+    Kernel: require("./kernel/kernel.js")
 };

@@ -1,5 +1,5 @@
 const debug = require('debug')('symbiose:kernel')
-const EventEmitter = require('./event/bin/index.js');
+const EventEmitter = require('../events/event-emitter.js');
 const fs = require('fs')
 const path = require('path')
 const objectAssign = require('object-assign')
@@ -7,7 +7,7 @@ const objectAssign = require('object-assign')
 const Http = require('./http.js')
 const App = require('./app-express.js')
 
-const configLoader = require('./convict/configloader.js')
+const configLoader = require('../convict/configloader.js')
 const Symbiont = require('symbiont')
 
 /* require in parent directory work context */
