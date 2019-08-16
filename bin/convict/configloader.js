@@ -1,6 +1,6 @@
 const debug = require('debug')('symbiose:configloader')
 const error = require('debug')('symbiose:configloader:error')
-const Convict = require('./bin/init.js')
+const Convict = require('./bin/index.js')
 const path = require('path')
 const YAML = require('yaml')
 const fs = require('fs')
