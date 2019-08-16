@@ -15,10 +15,7 @@
     "mvc",
     "bundle"
   ],
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
+  "main": "bin/index.js",
   "private": true,
   "author": "A-312",
   "license": "MIT",
