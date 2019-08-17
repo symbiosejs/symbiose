@@ -4,8 +4,8 @@ const fs = require('fs')
 const path = require('path')
 const objectAssign = require('object-assign')
 
-const Http = require('./http.js')
-const App = require('./app-express.js')
+const Http = require('./http/http.js')
+const App = require('./http/app-express.js')
 
 const configLoader = require('../convict/configloader.js')
 const Symbiont = require('symbiont')
