@@ -206,7 +206,7 @@ function registerTemplateEngines(app) {
 
         advice += "- Do you install ${engine.name} with npm install {package-name} ?"
 
-        throw `template engine can't load ${engine.name}.\n${advice}`
+        throw new Error(`template engine can't load ${engine.name}.\n${advice}`)
       }
     }
 

@@ -23,7 +23,7 @@ function Kernel(arg) {
    */
   Object.defineProperty(Kernel.prototype, "config", {
     value: new configLoader(arg.config)
-  });
+  })
 
   if (arg.symbionts && arg.symbionts instanceof Array) {
     debug('loading symbionts...')
@@ -40,7 +40,7 @@ module.exports = Kernel
 
 Object.defineProperty(Kernel, "env", {
   value: getCurrentEnv()
-});
+})
 
 
 Kernel.prototype.launchServer = function() {
@@ -74,7 +74,7 @@ function loadSymbiont(packageName) {
 function getCurrentEnv() {
   const argv = require('yargs-parser')(process.argv.slice(2))
 
-  let env = "dev";
+  let env = "dev"
 
   const pick = [
     (argv["env"] && typeof argv["env"] === "string") ? argv["env"] : false,
