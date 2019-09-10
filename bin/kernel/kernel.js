@@ -8,6 +8,7 @@ const Http = require('./http/http.js')
 const App = require('./http/app-express.js')
 
 const configLoader = require('../convict/configloader.js')
+const routesLoader = require('../convict/routesloader.js')
 const Symbiont = require('symbiont')
 
 /* require in parent directory work context */
@@ -50,6 +51,25 @@ function Kernel(arg) {
     debug('No symbiont registered to load with Symbiose, check `new Kernel(arg.symbionts)`.')
     //TODO: Fire an error.
   }
+
+  /**
+   * Routes Storage
+   *
+   * @name routes
+   * @memberOf Kernel
+   */
+  Object.defineProperty(this, "routes", {
+    value: new routesLoader(this.config.get("path.routes"))
+  })
+
+  /**
+   * This listener will load project & controller routes when the AppServer will be ready (by default AppServer = Express)
+   *
+   * @listens    Kernel#asking2loadRoutes
+   */
+  this.eventEmitter.on("asking2loadRoutes", (app) => {
+    this.routes.load(app)
+  })
 }
 
 
@@ -76,7 +96,7 @@ Kernel.prototype.launchServer = function() {
   const mdw = new App(null, this.config),
     http = new Http()
 
-  const app = mdw.createAppServer()
+  const app = mdw.createAppServer(this.eventEmitter)
 
   const port = this.config.get("http.port")
 

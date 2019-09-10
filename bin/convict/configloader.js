@@ -28,7 +28,6 @@ function ConfigLoader(paths) {
 
   const $$ = Convict(path.resolve(__dirname, 'schema', 'config.yml'))
 
-
   /**
    * Convict
    *

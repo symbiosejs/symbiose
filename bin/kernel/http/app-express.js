@@ -20,7 +20,7 @@ function AppExpress(options, config) {
 module.exports = AppExpress
 
 
-AppExpress.prototype.createAppServer = function() {
+AppExpress.prototype.createAppServer = function(eventEmitter) {
   const app = express()
   this.app = app
 
@@ -35,7 +35,15 @@ AppExpress.prototype.createAppServer = function() {
   app.use(express.urlencoded({ extended: false }))
   app.use(cookieParser())
 
+  // TODO IMPROVE THIS
   registerStaticFolders.call(this, app)
+
+  /**
+   * Load routes
+   *
+   * @event Kernel#asking2loadRoutes
+   */
+  eventEmitter.emit('asking2loadRoutes', app)
 
   // >> LOAD VIEW HERE
   // >>
@@ -149,6 +157,8 @@ function registerCSSEngine(engine) {
       break
     default:
       console.log('bad config: css engine %s not available', program.css)
+
+      eventEmitter.emit('onUnknownCSSEngine', app)
       process.exit(1)
       /**
        * TODO : Fire event to register other css engine
