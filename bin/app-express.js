@@ -4,10 +4,16 @@ const debug = require('debug')('symbiose:express')
 const express = require('express')
 const logger = require('morgan')
 const objectAssign = require('object-assign')
+const path = require('path')
 
-
-function AppExpress(options) {
-  this.config = options
+/**
+ * App interface for Express
+ *
+ * @Class
+ * @param   {object}    options     Options
+ */
+function AppExpress(options, config) {
+  this.config = config
 }
 
 
@@ -62,17 +68,11 @@ AppExpress.prototype.createAppServer = function() {
 }
 
 
-function registerCSSEngines(app, options) {
+function registerCSSEngines(app) {
   /*
    * TODO: Replace by config loader class
    */
-  const engines = (() => {
-    try {
-      return options.framework.css.engines
-    } catch (e) {
-      return false
-    }
-  })()
+  const engines = this.config.get("framework.css.engines")
 
   if (!(engines && engines[0] instanceof Array))
     return
@@ -175,24 +175,12 @@ function registerTemplateEngines(app) {
   /*
    * TODO: Replace by config loader class
    */
-  const engines = (() => {
-    try {
-      return options.framework.templating.engines
-    } catch (e) {
-      return false
-    }
-  })()
+  const engines = this.config.get("framework.templating.engines")
 
   /*
    * TODO: Replace by config loader class
    */
-  const extension = (() => {
-    try {
-      return options.framework.templating.default
-    } catch (e) {
-      return false
-    }
-  })()
+  const extension = this.config.get("framework.templating.default")
 
   if (extension)
     app.set('view engine', extension)

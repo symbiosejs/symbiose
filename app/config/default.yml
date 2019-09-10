@@ -1,7 +1,0 @@
-http:
-  port: 3000
-
-framework: 
-  templating:
-    default: html
-    engines: []

@@ -1,0 +1,62 @@
+path:
+  routes: 
+    # path.routes
+    format: String
+    default: app/config/routes.yml
+  cache:
+    # path.cache
+    format: String
+    default: app/cache/
+
+
+http:
+  port:
+    # http.port
+    format: port
+    default: 3000
+
+
+framework: 
+  templating:
+    default:
+      # framework.templating.default
+      format: String-extension
+      default: html
+
+    engines:
+      # framework.templating.engines
+      format: source-array
+      default: [{ name: nunjucks, ext: njk, consolidate: true }]
+
+      children: 
+        # framework.templating.engines[x]
+        name:
+          # *.engines[x].name
+          format: String
+          default: ''
+        ext:
+          # *.engines[x].ext
+          format: string-extension
+          default: null
+        consolidate:
+          # *.engines[x].ext
+          format: Boolean
+          default: true
+
+
+  css:
+    engines:
+      # framework.css.engines
+      format: source-array
+      default: []
+
+    children: 
+      # framework.css.engines[x]
+      name:
+        # *.engines[x].name
+        format: String
+        default: ''
+      options:
+        # *.engines[x].options
+        format: Object
+        default: {}
