@@ -47,5 +47,6 @@
     "object-assign": "4.1.1",
     "symbiont": "1.0.0",
     "yaml": "1.6.0",
+    "yargs-parser": "13.1.1"
   }
 }

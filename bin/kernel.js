@@ -38,6 +38,11 @@ function Kernel(arg) {
 module.exports = Kernel
 
 
+Object.defineProperty(Kernel, "env", {
+  value: getCurrentEnv()
+});
+
+
 Kernel.prototype.launchServer = function() {
   const mdw = new App(null, this.config),
     http = new Http()
@@ -63,4 +68,26 @@ Kernel.prototype.start = function(envName, filename) {
 
 function loadSymbiont(packageName) {
   console.log(packageName)
+}
+
+
+function getCurrentEnv() {
+  const argv = require('yargs-parser')(process.argv.slice(2))
+
+  let env = "dev";
+
+  const pick = [
+    (argv["env"] && typeof argv["env"] === "string") ? argv["env"] : false,
+    (argv["dev"]) ? "dev" : false,
+    (argv["prod"]) ? "prod" : false
+  ].filter((env) => env)
+
+  if (pick.length === 0) {
+    debug('Symbiose starts with the default environment: %s', env)
+  } else {
+    env = pick[0]
+    debug('Symbiose starts with %s environment.', env)
+  }
+
+  return env
 }
