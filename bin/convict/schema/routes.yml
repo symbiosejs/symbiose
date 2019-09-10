@@ -1,0 +1,40 @@
+routes:
+  # routes
+  format: Array[Route]
+  default: []
+
+  route:
+    # routes[x]
+
+    path:
+      # routes[x].path
+      format: String
+      default: null
+
+    controller:
+      # routes[x].controller
+      format: String
+      default: null
+
+    format:
+      # routes[x].format
+      format: String
+      default: html
+
+    defaults:
+      # routes[x].defaults
+      format: Array
+      default: []
+
+    requirements:
+      # routes[x].requirements
+      format: Array[String,Array[String]]
+      default: []
+      # https://github.com/symfony/routing/blob/dbb8b142a2da093567d20519a17a80c41babed0f/Route.php#L531
+      # TODO : sanitizeRequirement "^" et "$"
+      # https://github.com/symfony/routing/blob/c58488f0b17f69dc0ee63a586f5c5d302c269fb5/RouteCompiler.php#L151
+
+requirements:
+  # requirements
+  format: Array[String,Array[String]]
+  default: []

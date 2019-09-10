@@ -6,8 +6,15 @@ path:
   cache:
     # path.cache
     format: String
-    default: app/cache/
+    default: app/.cache/
 
+symbiont:
+  path:
+    routes: 
+      # symbiont.path.routes
+      format: array[String]
+      # ${workfolder}/${symbiont.path[x]}/{routes[x]}
+      default: ["app/config/routes.yml"]
 
 http:
   port:
@@ -20,7 +27,7 @@ framework:
   templating:
     default:
       # framework.templating.default
-      format: String-extension
+      format: String
       default: html
 
     engines:
@@ -36,7 +43,7 @@ framework:
           default: ''
         ext:
           # *.engines[x].ext
-          format: string-extension
+          format: String
           default: null
         consolidate:
           # *.engines[x].ext
