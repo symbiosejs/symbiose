@@ -93,11 +93,14 @@ function registerCSSEngine(engine) {
   /**
    * Same engines list that: https://github.com/expressjs/generator/blob/d1f3fcc6ccc7ab8986fb3438c82ab1a1f20dc50d/bin/express-cli.js#L248
    */
+
+  let defaultOpt
+
   switch (engine.name) {
     case 'compass':
       const compass = require('node-compass')
 
-      const defaultOpt = {
+      defaultOpt = {
         mode: 'expanded'
       }
       options = objectAssign(defaultOpt, options)
@@ -107,9 +110,9 @@ function registerCSSEngine(engine) {
     case 'less':
       const lessMiddleware = require('less-middleware')
 
-      const defaultOpt = {
+      defaultOpt = {
         src: path.join(__dirname, 'public'),
-        once: false // TODO : dev & prod mode ---> false = dev _ true = prod
+        once: false // (prod: true) TODO
       }
       options = objectAssign(defaultOpt, options)
 
@@ -118,16 +121,16 @@ function registerCSSEngine(engine) {
     case 'sass':
       const sassMiddleware = require('node-sass-middleware')
 
-      const defaultOpt = {
+      defaultOpt = {
         src: path.join(__dirname, 'public'),
         dest: path.join(__dirname, 'public'),
-        indentedSyntax: true, // true = .sass and false = .scss
+        indentedSyntax: true, // true = .sass and false = .scss (TODO)
         sourceMap: true
         /**
-         * TODO: add
-         * debug ---> false = prod _ true = dev
-         * force ---> false = prod _ true = dev
-        **/
+         * TODO: add settings:
+         * debug: true/false, (dev: true)
+         * force: true/false, (dev: true)
+         */
       }
       options = objectAssign(defaultOpt, options)
 
@@ -136,7 +139,7 @@ function registerCSSEngine(engine) {
     case 'stylus':
       const stylus = require('stylus')
 
-      const defaultOpt = {
+      defaultOpt = {
         src: path.join(__dirname, 'public'),
         dest: path.join(__dirname, 'public')
       }
