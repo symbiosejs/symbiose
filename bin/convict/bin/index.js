@@ -33,7 +33,7 @@ convict.addFormat({
 
 module.exports = convict;
 
-// TODO: Make a PR to change convict and scope global variable
+// @todo   Make a PR to change convict and scope global variable
 /*function new_require(packageName) {
   const path = require.resolve(packageName)
   const before = require.cache[path] || false

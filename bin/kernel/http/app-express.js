@@ -6,13 +6,24 @@ const logger = require('morgan')
 const objectAssign = require('object-assign')
 const path = require('path')
 
+
 /**
- * App interface for Express
+ * The `AppExpress` class provide and configure Express (depending of YAML configuration).
+ *
+ * The modules registers:
+ *   - View Folders;
+ *   - Static Folders;
+ *   - CSS Engines (depending of `framework.css.engines`);
+ *   - Template Engine (depending of `framework.templating.engines`);
+ *   - Routes set in routes.yml files (depending of `path.routes` and `symbiont.path.routes[]`);
+ *   - The default extension for view (depending of `framework.templating.default`).
+ *
+ * <br><br>See <a href="#createAppServer">createAppServer</a>.
  *
  * @Class
- * @param   {object}    options     Options
+ * @param      {ConfigLoader}    config     Allow to get Symbiose config in this this class
  */
-function AppExpress(options, config) {
+function AppExpress(config) {
   this.config = config
 }
 
@@ -20,9 +31,16 @@ function AppExpress(options, config) {
 module.exports = AppExpress
 
 
+/**
+ * Create the App Server with express.
+ *
+ * @name       AppExpress.createAppServer
+ * @function
+ * @param      {eventEmitter}    eventEmitter     eventEmitter
+ * @return     {Express}         Returns a new instance of Express.
+ */
 AppExpress.prototype.createAppServer = function(eventEmitter) {
   const app = express()
-  this.app = app
 
   // CSS Engine have to be the first
   registerCSSEngines.call(this, app)
@@ -35,21 +53,21 @@ AppExpress.prototype.createAppServer = function(eventEmitter) {
   app.use(express.urlencoded({ extended: false }))
   app.use(cookieParser())
 
-  // TODO IMPROVE THIS
+  // @todo     IMPROVE THIS
   registerStaticFolders.call(this, app)
 
   /**
-   * Load routes
+   * Fire in AppExpress to load routes.
    *
-   * @event Kernel#asking2loadRoutes
+   * @event    AppExpress#askingRoutes
    */
-  eventEmitter.emit('asking2loadRoutes', app)
+  eventEmitter.emit('askingRoutes', app)
 
   // >> LOAD VIEW HERE
   // >>
   // >>
 
-  var admin = express() // TODO: use ROUTER!!!!!!!!!!
+  var admin = express() // @todo   use ROUTER!!!!!!!!!!
 
   app.get('/', (req, res) => res.send('Hello World!'))
 
@@ -77,16 +95,13 @@ AppExpress.prototype.createAppServer = function(eventEmitter) {
 
 
 function registerCSSEngines(app) {
-  /*
-   * TODO: Replace by config loader class
-   */
   const engines = this.config.get("framework.css.engines")
 
   if (!(engines && engines[0] instanceof Array))
     return
 
   engines.forEach((engine) => {
-    registerCSSEngine(engine)
+    app.use(registerCSSEngine(engine))
   })
 }
 
@@ -95,7 +110,7 @@ function registerCSSEngine(engine) {
   let options = engine.options || {}
 
   /**
-   * TODO: Use gulpfile instead this to compile scss/css, I think I will propose the two choices
+   * @todo   Use gulpfile instead this to compile scss/css, I think I will propose the two choices
    */
 
   /**
@@ -113,37 +128,34 @@ function registerCSSEngine(engine) {
       }
       options = objectAssign(defaultOpt, options)
 
-      app.use(compass(options))
-      break
+      return compass(options)
     case 'less':
       const lessMiddleware = require('less-middleware')
 
       defaultOpt = {
         src: path.join(__dirname, 'public'),
-        once: false // (prod: true) TODO
+        once: false // @todo   (prod: true)
       }
       options = objectAssign(defaultOpt, options)
 
-      app.use(lessMiddleware(options.src, options))
-      break
+      return lessMiddleware(options.src, options)
     case 'sass':
       const sassMiddleware = require('node-sass-middleware')
 
       defaultOpt = {
         src: path.join(__dirname, 'public'),
         dest: path.join(__dirname, 'public'),
-        indentedSyntax: true, // true = .sass and false = .scss (TODO)
+        indentedSyntax: true, // @todo   true = .sass and false = .scss
         sourceMap: true
         /**
-         * TODO: add settings:
-         * debug: true/false, (dev: true)
-         * force: true/false, (dev: true)
+         * @todo   add settings:
+         *   - debug: true/false, (dev: true)
+         *   - force: true/false, (dev: true)
          */
       }
       options = objectAssign(defaultOpt, options)
 
-      app.use(sassMiddleware(options))
-      break
+      return sassMiddleware(options)
     case 'stylus':
       const stylus = require('stylus')
 
@@ -153,15 +165,14 @@ function registerCSSEngine(engine) {
       }
       options = objectAssign(defaultOpt, options)
 
-      app.use(stylus.middleware(options))
-      break
+      return stylus.middleware(options)
     default:
       console.log('bad config: css engine %s not available', program.css)
 
       eventEmitter.emit('onUnknownCSSEngine', app)
       process.exit(1)
       /**
-       * TODO : Fire event to register other css engine
+       * @todo   Fire event to register other css engine
        *
        * ```
        * const cssEngine = kernel.getCSSEngine(engine.name) // (?) Kernel or CSSEngine class ?
@@ -186,12 +197,12 @@ function registerViewFolders(app) {
 function registerTemplateEngines(app) {
   //set default
   /*
-   * TODO: Replace by config loader class
+   * @todo   Replace by config loader class
    */
   const engines = this.config.get("framework.templating.engines")
 
   /*
-   * TODO: Replace by config loader class
+   * @todo   Replace by config loader class
    */
   const extension = this.config.get("framework.templating.default")
 
@@ -208,7 +219,7 @@ function registerTemplateEngines(app) {
   debug("loading template engine")
   engines.forEach((engine) => {
     debug(`loading ${engine.name} template engine`)
-    const package = () => {
+    const templatePackage = () => {
       try {
         return (engine.consolidate) ? cons[engine.name] : require(engine.name)
       } catch (e) {
@@ -224,7 +235,7 @@ function registerTemplateEngines(app) {
     }
 
     const extension = engine.ext || engine.name
-    app.set(extension, package)
+    app.set(extension, templatePackage)
   })
 }
 
@@ -235,10 +246,6 @@ function registerStaticFolders(app) {
 
 
 function registerError(app) {
-  /**
-   * src: https://github.com/expressjs/generator/blob/d1f3fcc6ccc7ab8986fb3438c82ab1a1f20dc50d/templates/js/app.js.ejs#L34
-   */
-
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
     next(createError(404))

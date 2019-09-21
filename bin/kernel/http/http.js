@@ -48,11 +48,6 @@ Http.prototype.createHttpServer = function(app, port) {
 }
 
 
-/**
- * Event listener for HTTP server 'error' event.
- *
- * @param   {object}    error   Error object
- */
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error

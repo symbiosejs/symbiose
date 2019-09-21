@@ -16,6 +16,9 @@
     "bundle"
   ],
   "main": "bin/index.js",
+  "scripts": {
+    "doc": "node ./node_modules/gulp/bin/gulp.js doc"
+  },
   "private": true,
   "author": "A-312",
   "license": "MIT",
@@ -44,5 +47,12 @@
     "symbiont": "1.0.0",
     "yaml": "1.6.0",
     "yargs-parser": "13.1.1"
+  },
+  "devDependencies": {
+    "del": "5.1.0",
+    "docdash": "1.1.1",
+    "gulp": "4.0.2",
+    "gulp-jsdoc3": "2.0.0",
+    "jsdoc": "3.6.3"
   }
 }
