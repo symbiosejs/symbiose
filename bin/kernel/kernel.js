@@ -49,7 +49,7 @@ function Kernel(arg) {
     arg.symbionts.forEach((val, key) => symbiontLoader.call(this, val, key))
   } else {
     debug('No symbiont registered to load with Symbiose, check `new Kernel(arg.symbionts)`.')
-    //TODO: Fire an error.
+    // @todo   Fire an error.
   }
 
   /**
@@ -65,9 +65,9 @@ function Kernel(arg) {
   /**
    * This listener will load project & controller routes when the AppServer will be ready (by default AppServer = Express)
    *
-   * @listens    Kernel#asking2loadRoutes
+   * @listens    Kernel#askingRoutes
    */
-  this.eventEmitter.on("asking2loadRoutes", (app) => {
+  this.eventEmitter.on("askingRoutes", (app) => {
     this.routes.load(app)
   })
 }
@@ -82,7 +82,7 @@ Object.defineProperty(Kernel, "env", {
 
 
 /**
- * Symbionts { <symbiontName>: <symbiontClass> }
+ * Symbionts { `symbiontName`: `symbiontClass` }
  *
  * @name symbionts
  * @memberOf Kernel
@@ -93,7 +93,7 @@ Object.defineProperty(Kernel.prototype, "symbionts", {
 
 
 Kernel.prototype.launchServer = function() {
-  const mdw = new App(null, this.config),
+  const mdw = new App(this.config),
     http = new Http()
 
   const app = mdw.createAppServer(this.eventEmitter)
